@@ -10,7 +10,7 @@ import {
 
 const initialFormState = { name: "", description: "" };
 
-function App() {
+function App({}) {
   const [notes, setNotes] = useState<any>([]);
   const [formData, setFormData] = useState(initialFormState);
 
@@ -44,30 +44,47 @@ function App() {
 
   return (
     <div className="App">
-      <h1>My Notes App</h1>
-      <input
-        onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-        placeholder="Note name"
-        value={formData.name}
-      />
-      <input
-        onChange={(e) =>
-          setFormData({ ...formData, description: e.target.value })
-        }
-        placeholder="Note description"
-        value={formData.description}
-      />
-      <button onClick={createNote}>Create Note</button>
+      <div className="Header">
+        <h1>Robert's Amplify Notes App</h1>
+        <div className="SignOutButton">
+          <AmplifySignOut />
+        </div>
+      </div>
+      <div className="CreateNoteContainer">
+        <h2>Create Note</h2>
+        <div className="InputsContainer">
+          <div className="">
+            <p>Name</p>
+            <input
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              placeholder="Note name"
+              value={formData.name}
+            />
+          </div>
+          <div className="">
+            <p>Description</p>
+            <input
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              placeholder="Note description"
+              value={formData.description}
+            />
+          </div>
+        </div>
+        <button onClick={createNote}>Create Note</button>
+      </div>
       <div style={{ marginBottom: 30 }}>
         {notes.map((note: any) => (
-          <div key={note.id || note.name}>
+          <div key={note.id || note.name} className="Note">
             <h2>{note.name}</h2>
             <p>{note.description}</p>
             <button onClick={() => deleteNote(note)}>Delete note</button>
           </div>
         ))}
       </div>
-      <AmplifySignOut />
     </div>
   );
 }
