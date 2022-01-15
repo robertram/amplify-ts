@@ -30,3 +30,22 @@ export const listNotes = /* GraphQL */ `
     }
   }
 `;
+
+export const listUsers = /* GraphQL */ `
+  query ListUsers(
+    $filter: ModelNoteFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listUsers(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        name
+        profilePicture
+        createdAt
+        updatedAt
+      }
+      nextToken
+    }
+  }
+`;

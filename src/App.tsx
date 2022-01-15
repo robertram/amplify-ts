@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./App.css";
 import { API } from "aws-amplify";
 import { withAuthenticator, AmplifySignOut } from "@aws-amplify/ui-react";
-import { listNotes } from "./graphql/queries";
+import { listNotes, listUsers } from "./graphql/queries";
 import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
@@ -12,15 +12,22 @@ const initialFormState = { name: "", description: "" };
 
 function App({}) {
   const [notes, setNotes] = useState<any>([]);
+  const [users, setUsers] = useState<any>([]);
   const [formData, setFormData] = useState(initialFormState);
 
   useEffect(() => {
     fetchNotes();
+    fetchUsers();
   }, []);
 
   async function fetchNotes() {
     const apiData: any = await API.graphql({ query: listNotes });
     setNotes(apiData.data.listNotes.items);
+  }
+
+  async function fetchUsers() {
+    const apiData: any = await API.graphql({ query: listUsers });
+    setUsers(apiData.data.listUsers.items);
   }
 
   async function createNote() {
@@ -82,6 +89,12 @@ function App({}) {
             <h2>{note.name}</h2>
             <p>{note.description}</p>
             <button onClick={() => deleteNote(note)}>Delete note</button>
+          </div>
+        ))}
+
+        {users.map((user: any) => (
+          <div key={user.id || user.name} className="Note">
+            <h2>{user.name}</h2>
           </div>
         ))}
       </div>
