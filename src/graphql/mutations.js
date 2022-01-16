@@ -43,3 +43,17 @@ export const deleteNote = /* GraphQL */ `
     }
   }
 `;
+export const updateUser = /* GraphQL */ `
+  mutation UpdateUser(
+    $input: UpdateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    updateUser(input: $input, condition: $condition) {
+      id
+      name
+      profilePicture
+      createdAt
+      updatedAt
+    }
+  }
+`;

@@ -13,7 +13,8 @@
     },
     "categories": {
       "auth": {
-        "amplifyts0c8590ad": {}
+        "amplifyts0c8590ad": {},
+        "true": {}
       }
     }
   }
