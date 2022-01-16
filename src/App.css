@@ -69,3 +69,15 @@
   margin: auto;
   padding: 20px;
 }
+
+.Navigation {
+  margin: 20px 0;
+}
+
+.NavigationItem {
+  margin-right: 10px;
+}
+
+.Divider {
+  width: 100%;
+}

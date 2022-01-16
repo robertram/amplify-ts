@@ -7,6 +7,7 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
 } from "./graphql/mutations";
+import Navigator from "./components/Navigator";
 
 const initialFormState = { name: "", description: "" };
 
@@ -57,6 +58,8 @@ function App({}) {
           <AmplifySignOut />
         </div>
       </div>
+
+      <Navigator />
       <div className="CreateNoteContainer">
         <h2>Create Note</h2>
         <div className="InputsContainer">
@@ -91,7 +94,38 @@ function App({}) {
             <button onClick={() => deleteNote(note)}>Delete note</button>
           </div>
         ))}
+      </div>
 
+      <hr className="Divider" />
+
+      <div className="CreateNoteContainer">
+        <h2>User Data</h2>
+        <div className="InputsContainer">
+          <div className="">
+            <p>Name</p>
+            <input
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
+              placeholder="What is your name?"
+              value={formData.name}
+            />
+          </div>
+          <div className="">
+            <p>Profile Picture</p>
+            <input
+              onChange={(e) =>
+                setFormData({ ...formData, description: e.target.value })
+              }
+              placeholder="Note description"
+              value={formData.description}
+            />
+          </div>
+        </div>
+        <button onClick={createNote}>Create Note</button>
+      </div>
+
+      <div className="">
         {users.map((user: any) => (
           <div key={user.id || user.name} className="Note">
             <h2>{user.name}</h2>
