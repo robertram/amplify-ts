@@ -40,6 +40,7 @@ export const deleteNote = /* GraphQL */ `
       description
       createdAt
       updatedAt
+      _version
     }
   }
 `;
@@ -51,7 +52,20 @@ export const updateUser = /* GraphQL */ `
     updateUser(input: $input, condition: $condition) {
       id
       name
-      profilePicture
+      createdAt
+      updatedAt
+      _version
+    }
+  }
+`;
+export const createUser = /* GraphQL */ `
+  mutation CreateUser(
+    $input: CreateUserInput!
+    $condition: ModelUserConditionInput
+  ) {
+    createUser(input: $input, condition: $condition) {
+      id
+      name
       createdAt
       updatedAt
     }

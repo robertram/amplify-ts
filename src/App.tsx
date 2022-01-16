@@ -7,23 +7,31 @@ import {
   createNote as createNoteMutation,
   deleteNote as deleteNoteMutation,
   updateUser as updateUserMutation,
+  createUser as createUserMutation,
 } from "./graphql/mutations";
 import { Storage } from "aws-amplify";
 
 const initialFormState = { name: "", description: "" };
-const initialUserFormState = { name: "", profilePicture: "" };
+const initialUserFormState = {
+  _version: 1,
+  id: "",
+  name: "",
+  profilePicture: "",
+};
 
-function App({}) {
+function App() {
   const [notes, setNotes] = useState<any>([]);
   const [users, setUsers] = useState<any>([]);
   const [formData, setFormData] = useState(initialFormState);
   const [userFormData, setUserFormData] = useState(initialUserFormState);
   const [image, setImage] = useState<any>("avatar");
-
   useEffect(() => {
     fetchNotes();
-    fetchUsers();
     onPageRendered();
+  }, []);
+
+  useEffect(() => {
+    fetchUsers();
   }, []);
 
   const onPageRendered = async () => {
@@ -46,22 +54,32 @@ function App({}) {
   async function fetchNotes() {
     const apiData: any = await API.graphql({ query: listNotes });
     setNotes(apiData.data.listNotes.items);
+    console.log("fetchNotes", apiData);
   }
 
   async function fetchUsers() {
     const apiData: any = await API.graphql({ query: listUsers });
     setUsers(apiData.data.listUsers.items);
+    console.log("fetchUsers", apiData);
   }
 
-  async function updateUser() {
-    if (!userFormData.name || !userFormData.profilePicture) return;
+  async function updateUser({ id }: any) {
+    if (!userFormData.name) return;
+
+    users.map((item: any, index: number) => {
+      if (index == 0) {
+        console.log("item", item, index);
+        userFormData.id = item.id;
+        userFormData._version = item._version;
+        return;
+      }
+    });
     await API.graphql({
       query: updateUserMutation,
       variables: { input: userFormData },
     });
     setUsers([...users, userFormData]);
     setUserFormData(initialUserFormState);
-    console.log("userFormData", userFormData);
   }
 
   async function createNote() {
@@ -74,12 +92,22 @@ function App({}) {
     setFormData(initialFormState);
   }
 
-  async function deleteNote({ id }: any) {
+  async function createUser() {
+    if (!userFormData.name) return;
+    await API.graphql({
+      query: createUserMutation,
+      variables: { input: userFormData },
+    });
+    setUsers([...users, userFormData]);
+    setUserFormData(initialUserFormState);
+  }
+
+  async function deleteNote({ id, _version }: any) {
     const newNotesArray = notes.filter((note: any) => note.id !== id);
     setNotes(newNotesArray);
     await API.graphql({
       query: deleteNoteMutation,
-      variables: { input: { id } },
+      variables: { input: { id, _version } },
     });
   }
 
@@ -113,8 +141,13 @@ function App({}) {
     <div className="App">
       <div className="Header">
         <h1>Robert's Amplify Notes App</h1>
-        <div className="SignOutButton">
-          <AmplifySignOut />
+        <div className="HeaderRightSection">
+          {users.lenght > 0 && (
+            <p className="HeaderUserName">Hello again {users[0].name}</p>
+          )}
+          <div className="SignOutButton">
+            <AmplifySignOut />
+          </div>
         </div>
       </div>
 
@@ -171,7 +204,6 @@ function App({}) {
           </div>
           <div className="">
             <p>Profile Picture</p>
-
             <a href="#">
               <input
                 type="file"
@@ -192,11 +224,12 @@ function App({}) {
       </div>
 
       <div className="">
-        {users.map((user: any) => (
-          <div key={user.id || user.name} className="Note">
-            <h2>{user.name}</h2>
-          </div>
-        ))}
+        {users &&
+          users.map((user: any) => (
+            <div key={user.id || user.name} className="Note">
+              <h3>Hello {user.name}</h3>
+            </div>
+          ))}
       </div>
     </div>
   );

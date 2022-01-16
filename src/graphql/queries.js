@@ -25,15 +25,15 @@ export const listNotes = /* GraphQL */ `
         description
         createdAt
         updatedAt
+        _version
       }
       nextToken
     }
   }
 `;
-
 export const listUsers = /* GraphQL */ `
   query ListUsers(
-    $filter: ModelNoteFilterInput
+    $filter: ModelUserFilterInput
     $limit: Int
     $nextToken: String
   ) {
@@ -44,6 +44,7 @@ export const listUsers = /* GraphQL */ `
         profilePicture
         createdAt
         updatedAt
+        _version
       }
       nextToken
     }
