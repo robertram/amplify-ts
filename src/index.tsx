@@ -3,9 +3,10 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import Amplify from "aws-amplify";
+import Amplify, { Analytics, Auth, Storage } from "aws-amplify";
 import config from "./aws-exports";
 Amplify.configure(config);
+Storage.configure({ track: true, level: "private" });
 
 ReactDOM.render(
   <React.StrictMode>

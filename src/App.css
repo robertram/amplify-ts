@@ -47,6 +47,14 @@
   padding-left: 10px;
 }
 
+.HeaderRightSection {
+  display: flex;
+}
+
+.HeaderUserName {
+  margin-right: 10px;
+}
+
 .CreateNoteContainer {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   width: 50%;
@@ -68,4 +76,21 @@
   width: 50%;
   margin: auto;
   padding: 20px;
+}
+
+.Navigation {
+  margin: 20px 0;
+}
+
+.NavigationItem {
+  margin-right: 10px;
+}
+
+.Divider {
+  width: 100%;
+}
+
+.ProfileImageContainer {
+  max-width: 100px;
+  max-height: 100px;
 }
